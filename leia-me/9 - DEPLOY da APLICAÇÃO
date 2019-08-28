@@ -1,0 +1,106 @@
+
+  DICAS sobre o DEPLOY (IMPLANTAÇÃO) da Aplicação em um servidor de produção:
+
+  1º IMPLANTAÇÃO via SSH (linha de comando): 
+
+    - Para implantar a aplicação (baixar o projeto) no servidor, o ideal é realizar via ssh.
+
+    - É interessante que a aplicação (projeto) esteja em um repositório público, como o GitHub ou GitLab.
+
+    * BAIXAR o PROJETO via COMPOSER: 
+
+      Executar o cmd abaixo na pasta de projetos/app dentro do Servidor de Prod.:  
+
+      Cmd> COMPOSER REQUIRE NOME_PROJETO;  
+
+        Ex.: composer require sanchesmil/buscador-cursos
+
+      Obs.: * ONDE o COMPOSER BUSCA os PACOTES?
+
+            - Por padrão, no site "PACKAGIST.OR" que é o REPOSITÓRIO PÚBLICO do COMPOSER.
+            - Todavia, pode ser configurado p/ buscar de outros lugares. Ex. GitHub, Repositório Privado
+
+    * BAIXAR as DEPENDÊNCIAS ATUALIZADAS do PROJETO:
+
+      Cmd> COMPOSER INSTALL --NO-DEV (na raiz do projeto dentro do Servidor de Prod.)
+
+      Obs.: Dessa forma ele baixa as versões mais atuais das dependencias que estão declaradas na chave 'require' 
+            dentro do arquivo 'composer.json', descartando aquelas dependências que estão na chave 'require_dev', 
+            as quais não são necessárias no ambiente de produção. 
+
+    * OBS.: NÃO BAIXAR a PASTA 'VENDOR' p/ servidor de Prod:
+
+      A pasta "vendor" possui todas as dependências de terceiros do projeto, o que significa que ela é enorme.
+
+      Além disso, as dependências sofrem atualizações constantemente.
+
+      Por isso, deve-se incluir no arquivo '.GITIGNORE' a pasta /VENDOR.
+
+      Dessa forma, quando o projeto for 'baixado' a pasta 'VENDOR' será ignorada e não será baixada.
+
+      Quando rodamos 'COMPOSER ISNTALL' o próprio composer se encarrega de criar uma nova pasta VENDOR 
+      e baixar as versões mais atualizadas das dependências declaradas no arquivo 'composer.json'.
+
+  -----------------------------------------------------------------------
+
+  2º Criar a CHAVE de CRIPTOGRAFIA de SENHAS do LARAVEL (SEGURANÇA)
+
+     Na linha de cmd> PHP ARTISAN KEY:GENEREATE
+
+     Esse código adiciona uma string à linha APP_KEY do arquivo .ENV.
+
+     Ex.: APP_KEY=base64:1a8v26Rp6CuxsGpZFs2QKldznrGSl+tta5BMd7PnnuM=
+
+     Essa linha é utilizada como chave para realizar a parte de segurança do Laravel, como, por exemplo,
+     criptografar as senhas de usuário. Portanto, sempre que colocamos uma aplicação em produção, precisamos
+     alterar esse valor para que ela se mantenha segura.
+
+  _______________________________________________________________________
+  3º Alterar a linha APP_ENV do arquivo .ENV para 'prod':
+
+     APP_ENV=prod
+
+     Dessa forma, o Laravel saberá que estará em um ambiente de produção e conseguirá buscar
+     informações de como cachear os dados e realizar algumas otimizações internas.
+
+  _______________________________________________________________________
+  4º Alterar a linha APP_DEBUG do arquivo .ENV para 'false':
+
+     APP_DEBUG=false
+
+     Assim, se a nossa aplicação retornar uma exceção, ao invés de retornar diversas informações
+     do projeto/servidor, receberemos somente um 500 Server Error, o que ajuda bastante na segurança.
+
+  -----------------------------------------------------------------------
+  5º Alterar as configurações de CONEXÃO com o BANCO no arquio .ENV:
+
+     Também precisaremos alterar os dados de conexão com o banco de dados.
+
+     DB_CONNECTION= XXXXXXXXX
+     DB_HOST=XXXXXXXX
+     DB_PORT=3306
+     DB_USERNAME= ________
+     DB_PASSWORD=_______
+
+  -----------------------------------------------------------------------
+  6º Rodar as MIGRATIONS:
+
+     Depois de criado o banco de dados, precisaremos rodar as migrations, da mesma
+     forma que fizemos várias vezes durante o curso.
+
+  -----------------------------------------------------------------------
+
+  Obs.:
+
+     A menos que não seja possível, você não deve deixar seu arquivo .env em produção.
+     Em hospedagens compartilhadas, por exemplo, normalmente NÃO é possível gerenciar
+     variáveis de ambiente.
+     Mas caso você tenha controle sobre as variáveis de ambiente da sua aplicação,
+     não faça uso do arquivo .env.
+     Defina todas as variáveis necessárias diretamente no servidor, para que nenhuma
+     informação sensível esteja armazenada em texto puro.
+
+     Ler mais sobre isso em:
+
+      https://laravel.com/docs/5.8/deployment
+      https://laravel.com/docs/5.8/configuration#environment-configuration

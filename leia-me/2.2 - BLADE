@@ -1,0 +1,28 @@
+BLADE 
+
+	É um mecanismo de templates simples fornecido com o Laravel. 
+
+	É uma ferramenta usada na camada de visualização (View)
+
+	Possui comandos próprios que substituem os comandos nativos do PHP.
+
+	Os arquivos de visualização do blade usam a extensão de arquivo .blade.php 
+	e normalmente são armazenados no diretório 'resources/views'.
+
+	Dois dos principais benefícios do uso do Blade são a herança e as seções do modelo.
+
+	Como a maioria dos aplicativos da web mantém o mesmo layout geral em várias páginas, 
+	é conveniente definir esse layout como uma visualização única do Blade:
+
+	Ex. layout.blade.php
+
+	A partir deste template único, todas as views o estenderão, usando tags de marcação
+	HTML próprias do Blade. 
+
+	Nos arquivos que estendem o layout base são usadas as diretivas @extends, @section e @yield:
+
+		A diretiva @extends especifica qual layout (template base) a visão filha deve "herdar"
+
+		A diretiva @section, como o nome indica, define uma seção de conteúdo.
+
+		A diretiva @yield é usada para exibir o conteúdo de uma determinada seção.

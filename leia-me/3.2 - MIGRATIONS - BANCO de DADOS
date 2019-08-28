@@ -1,0 +1,89 @@
+
+MIGRATIONS
+
+    - São arquivos auxiliares do Laravel que criam o 'SCHEMA' do banco de dados.
+    
+    - Forma que o Laravel usa p/ criar e controlar as versões e esquemas do Banco de Dados.
+
+    - As migrações são como o controle de versão do banco de dados, permitindo que
+      sua equipe modifique e compartilhe facilmente o esquema do banco de dados do aplicativo.
+
+    - As migrations fornecem suporte para criar e manipular tabelas em todos os SGBDs suportados pelo Laravel.
+
+
+    - COMO CRIAR MIGRAÇÕES?
+
+          Através do Cmd>  PHP ARTISAN MAKE:MIGRATION NOME_DA_MIGRATION
+
+          O novo arquivo de migração será gerado no diretório 'database/migrations'.
+          Cada nome de arquivo de migração contém um registro de data e hora que permite
+          ao Laravel determinar a ordem das migrações.
+
+            Obs.1: Rodando essa migrate eu ainda não gerarei a tabela física, apenas o arquivo de migração.
+
+            Obs.2: Os arquivos de migração ficam armazenados no caminho 'DATABASE/MIGRATIONS'.
+
+          Após criar o arquivo de migração e configurá-lo é necessário rodar a migração:
+
+            cmd> PHP ARTISAN MIGRATE
+
+            Obs.: Rodando MIGRATE eu gerarei a tabela física ou a alteração desejada no banco.
+
+    - COMO CRIAR MIGRAÇÕES e as TABELAS ao mesmo tempo?
+
+           As opções --table e --create também podem ser usadas para indicar o
+           nome da tabela e se a migração criará uma nova tabela:
+
+           EXEMPLO cmd>  PHP ARTISAN MAKE:MIGRATION NOME_DA_MIGRATION  --CREATE=NOME_DA_TABELA
+
+           Obs.: Rodando essa MIGRATE eu gerarei tanto o arquivo de migração quanto a tabela física no banco.
+
+    -----------------------------------------------------------------
+
+   Exemplo de implementação de classe de migração que cria a tabela 'fligths':
+   
+   <?php
+
+   use Illuminate\Support\Facades\Schema;
+   use Illuminate\Database\Schema\Blueprint;
+   use Illuminate\Database\Migrations\Migration;
+
+   class CreateFlightsTable extends Migration
+   {
+       public function up()
+       {
+           Schema::create('flights', function (Blueprint $table) {
+               $table->bigIncrements('id');
+               $table->string('name');
+               $table->string('airline');
+               $table->timestamps();
+           });
+       }
+
+       public function down()
+       {
+           Schema::drop('flights');
+       }
+   }
+   ------------------------------------------------------------------
+
+    - COMO ALTERAR O ESQUEMA/MIGRATION do BANCO?
+
+        Cmd> PHP ARTISAN MIGRATE:REFRESH (*) ou CRIANDO UMA NOVA MIGRATION de ALTERAÇÃO (**)
+
+        (*) Este comando atualiza todas as MIGRATIONS, porém apaga todos os dados do banco.
+
+        (**) Para que os dados do banco não sejam perdidos é necessário criar uma nova MIGRATION
+        de alteração, com a opção --table setada para o nome da tabela que se deseja alterar.
+
+        Exemplo:  cmd> php artisan migrate altera_temporadas_table --table:temporadas
+
+        Após codificar a migration criada, digitar cmd> php artisan migrate
+
+    - COMO 'RODAR' as MIGRATIONS PENDENTES?
+
+        Cmd> PHP ARTISAN MIGRATE
+
+    - COMO REVERTER MIGRAÇÕES?
+
+        Cmd> PHP ARTISAN MIGRATE:ROLLBACK

@@ -1,0 +1,80 @@
+
+
+VALIDAÇÕES em LARAVEL:
+
+ 	COMO VALIDAR os DADOS vindos da VIEW no CONTROLLER?
+
+	 	No objeto do tipo Request, que recebemos por parâmetro em nosso método do Controller, 
+	 	há um método chamado validate, onde podemos definir as regras de validação.
+
+	 	Quando chamamos o método validate() e a validação não passa, o Laravel lança uma exceção, 
+	 	lê os erros dela e define esses erros na sessão. Depois disso, ele redireciona o usuário 
+	 	para a última página acessada.
+
+	 	Ex.: Validando o campo 'nome' para que não seja vazio e tenha no mínimo 3 caracteres:
+
+		 	public function store(Request $request){
+				 
+				$rerquest->validate([
+				        'nome' => 'required|min:3'
+				]);
+
+				......
+			}
+
+FORM REQUEST: 
+
+		O QUE É e PARA QUE SERVE um FORM REQUEST?
+
+	        - FORM REQUEST são classes de solicitação/requisição personalizadas que contêm lógica de validação.
+
+	        - Podem ser usadas para cenários de validação mais complexos: 
+
+	          No caso de termos mais validações e mais complexidade, separar isso em uma nova classe ajuda muito. 
+
+	        - Em um Form Request é possível definir mensagens personalizadas para os erros de validação.
+
+	    COMO CRIAR um FORM REQUEST?
+
+	        cmd> PHP ARTISAN MAKE:REQUEST 'NOME_FORM_REQUEST'
+
+	        Este comando irá criar uma nova classe de request dentro do caminho 'app/Http/Requests'
+
+	    COMO USAR um FORM REQUEST CRIADO?
+
+	        Basta passar o novo FORM REQUEST por parâmetro na assinatura de um método da classe controladora.
+
+	        Exemplo:
+
+	        public function store(SeriesFormRequest $request) { .... }
+
+	        Dessa forma, a solicitação de formulário de entrada é validada antes de o método do controlador ser chamado,
+	        o que significa que você não precisa sobrecarregar seu controlador com nenhuma lógica de validação. 
+
+	        Obs.: Ver a implementação da classe 'SeriesFormRequest' em 'app/Http/Requests'.
+
+COMO EXIBIR os ERROS de VALIDAÇÃO na VIEW?
+
+		Implementando uma verificação de erro na view que chamou o método.
+
+		Ex.: Exemplo de código fornecido pelo Laravel que imprime os erros: 
+
+			@if ($errors->any())
+			    <div class="alert alert-danger">
+			        <ul>
+			            @foreach ($errors->all() as $error)
+			                <li>{{ $error }}</li>
+			            @endforeach
+			        </ul>
+			    </div>
+			@endif
+
+		Obs.: Também é possível definir uma view de erros e importa-la na view principal através 
+		      da diretiva @include do blade, passando os erros retornados do controller.
+
+			  Ex.: 
+
+			  @include('erros', ['errors'=>$errors])    <!-- Inclui a página 'erros' passando os $errors que vieram do controller -->
+
+			  
+			  * Ver a página 'create.blade.php' em 'resources/view/series'. Ela faz o import esse include.

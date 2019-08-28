@@ -1,0 +1,69 @@
+
+MODEL:
+
+    * O QUE SÃO MODELS?
+
+        São Classes que 'representam/modelam' as tabelas do banco.
+
+        Cada tabela de banco de dados tem um "Modelo" correspondente que é
+        usado para interagir com essa tabela.
+
+        Os modelos permitem consultar dados em suas tabelas, além de inserir novos registros na tabela.
+
+    * COMO criar MODELS (classes de entidades) via CMD?
+
+        Através do cmd> PHP ARTISAN MAKE:MODEL 'NOME_MODEL' -m
+
+        Obs.: O '-m' já cria a MIGRATION
+
+        Exemplo: Criando a Model 'Temporada'
+
+           cmd> php artisan make:model Temporada -m
+
+    * OS MODELS SÃO PADRONIZADOS entre FRAMEWORKS de ORM?
+
+        NÃO. Cada ferramenta de ORM modela de um jeito diferente.
+
+
+-----------------------------------------------------------------
+
+ELOQUENTE ORM:
+
+    * O QUE é o ELOQUENT ORM?
+
+        É uma ferramenta para mapeamento Objeto-Relacional (0RM) nativa do Laravel.
+
+        Ele já vem incluído no Laravel e fornece uma implementação do ActiveRecord.
+
+        O Eloquente ORM 'mapeia' tabelas relacionais em Objetos.
+
+
+    * COMO o ELOQUENT(ORM) LIDA COM RELACIONAMENTO/CARDINALIDADE ENTRE CLASSES ?
+
+        - Através de métodos.
+        - É o nome do método quem 'indica' a cardinalidade com a outra entidade.
+        - Para isso, os métodos de relacionamento usam as seguintes propriedades:
+              belongsTo (pertence a),
+              hasMany (possui muitos),
+              hasOne (possui um),
+              belongsToMany (pertence a muitos)
+
+        - Obs.1: O ELOQUENT ORM 'não' trabalha com ANOTAÇÕES em PROPRIEDADES (atributos) como o DOCTRINE.
+        - Obs.2: Normalmente, o NOME do MÉTODO é quem 'indica' o tipo de relacionamento (ex. 1-N) com a outra entidade.
+
+        Ex.:
+
+        class Temporada extends Model
+        {
+            // Implementa o lado N do relacionamento 1 - N, onde cada Temporada possui N episodios.
+            public function episodios()
+            {
+                return $this->hasMany(Episodio::class); // Retorna os episodios desta Temporada
+            }
+        }
+
+    * OBS.: Após definir o relacionamento nas classes de entidade é necessário codificar/configurar
+            a chave estrangeira nas classes de migração.
+
+
+

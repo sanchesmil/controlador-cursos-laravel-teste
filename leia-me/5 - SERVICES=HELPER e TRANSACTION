@@ -1,0 +1,57 @@
+
+
+SERVICES OU HELPER:
+
+	A pasta SERVICES em 'app' foi criada para armazenar classes de serviço que fornecem 
+	funções extras para uso nas demais classes.
+
+	Isso melhora a legibilidade do nosso código e a coesão das nossas classes.
+	
+	Ao extrair uma nova classe, temos classes menores com responsabilidades 
+	bem definidas, o que torna a manutenção do código mais fácil.
+
+	Como exemplo foram criadas as classes RemovedorDeSerie que auxilia a remoção de Séries com
+	suas temporadas e episódios e também a classe CriadorDeSerie.
+
+TRANSACTION:
+
+	Ao utilizar transações, garantimos a integridade do nosso banco de dados, pois
+	a operação só será confirmada se tudo ocorrer bem. Além disso, se utilizarmos 
+	nos momentos certos, transações podem trazer melhorias de performance.
+
+	Isso significa que todos os comandos, queries e instruções executadas dentro
+	de uma transação só irão acontecer se todas funcionarem. Se uma delas falhar,
+    é possível "cancelar" essa transação.
+
+	NA PRÁTICA:
+
+	No Laravel, basta usar a classe fachada DB para abrir e consolidar a transação.
+
+	* Na classe RemovedorDeSerie foi usado o conceito de TRANSAÇÃO via o método DB::transaction:
+
+		O método transaction(function ...) recebe uma função, e tudo que for executado dentro 
+		dela estará em uma única transação. Dessa forma, se tivermos um erro na execução do 
+		nosso código, a transação não ocorrerá.
+
+		DB::transaction(function () use (&$variavel1) {
+		    //código transacional
+		});
+
+	* Na classe CriadorDeSerie foram usados os métodos DB::beginTransaction() para abrir uma 
+	transação e DB::commit() para commitar no banco as alterações;
+
+	    DB::beginTransaction();		
+		//código que altera o modelo
+		DB:commit()
+
+	OBS.: DB::transaction x DB::beginTransaction / DB::commit
+
+	-	DB::transaction gerencia os casos de erro automaticamente, fazendo rollback em caso de erro para nós.
+
+	-	DB::beginTransaction e DB::commit, não precisamos conhecer funções anônimas e suas particularidades de escopo.
+		
+		Além disso, com a segunda forma, temos um controle maior, verificando e fazendo rollback de uma transação, 
+		mesmo sem que uma exceção seja lançada.
+
+
+	

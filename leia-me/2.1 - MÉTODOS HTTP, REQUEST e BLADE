@@ -1,0 +1,102 @@
+MÉTODOS HTTP:
+
+    Para chamar métodos HTTP que executam ações de CRUD, o Laravel sugere 
+    uma nomenclatura padronizada, a qual pode ser adotada ou não.
+
+    Essa nomenclatura define um padrão de nomes de métodos para as ações de CRUD a serem executadas pelos controladores.
+
+    Ver:  https://laravel.com/docs/5.8/controllers#resource-controllers
+
+    Ações tratadas pelo controlador de recursos:
+
+    Exemplo:
+
+    Verb        URI                    Nome do Método               Nome da rota          AÇÃO
+    GET         /photos                 index                       photos.index        => Buscar todas as entidades 
+    GET         /photos/create          create                      photos.create       => Criar uma nova entidade
+    POST        /photos                 store                       photos.store        => Armazenar no banco a nova entidade
+    GET         /photos/{photo}         show                        photos.show         => Buscar uma entidade específica
+    GET         /photos/{photo}/edit    edit                        photos.edit         => Editar uma entidade específica
+    PUT/PATCH   /photos/{photo}         update                      photos.update       => Atualizar no banco uma entidade específica
+    DELETE      /photos/{photo}         destroy                     photos.destroy      => Remover a entidade do banco
+
+    Exemplo de rota no arquivo 'routes/web.php':
+
+        Route::get('/series', 'SeriesController@index');  => Chama o método 'index' do controlador 'SeriesController', buscando todas as séries.
+
+REQUEST (Requisição):
+
+    Por padrão, o Laravel utiliza a classe 'Illuminate\Http\Request' na chamado do método para realizar uma requisição HTTP ao controller.
+
+    Obs.: Funciona como uma INJEÇÃO de DEPENDÊNCIAS, criando 'por baixo dos panos' um objeto de requisição HTTP.
+
+    Ex:
+         public function index(Request $request)
+         {
+            ...
+         }
+    
+
+O QUE é BLADE?
+
+    O Blade é o mecanismo de templates simples, mas poderoso, fornecido com o Laravel.
+    Diferentemente de outros mecanismos de modelagem PHP populares, o Blade não o restringe
+    de usar código PHP simples em suas visualizações. Na verdade, todas as visões do Blade
+    são compiladas em código PHP simples e armazenadas em cache até que sejam modificadas,
+    o que significa que o Blade adiciona essencialmente zero de sobrecarga ao seu aplicativo.
+    Os arquivos de visualização do blade usam a extensão de arquivo .blade.php e normalmente
+    são armazenados no diretório resources / views.
+
+    O BLADE permite DEFINIR LAYOUTS:
+
+    Dois dos principais benefícios do uso do Blade são a herança e as seções do modelo.
+
+    Como a maioria dos aplicativos da web mantém o mesmo layout geral em várias páginas,
+    é conveniente definir esse layout como uma visualização única do Blade:
+
+    Exemplo de página 'MESTRE' ou 'TAMPLATE' chamada 'layout.blade.php'
+    ---------------------------------------------------------
+
+    <html>
+        <head>
+            <title>App Name - @yield('title')</title>
+        </head>
+        <body>
+            @section('sidebar')
+                This is the master sidebar.
+            @show
+
+            <div class="container">
+                @yield('content')
+            </div>
+        </body>
+    </html>
+    ---------------------------------------------------------------
+    OBS.:
+    A diretiva @section, como o nome indica, define uma seção de conteúdo.
+    A diretiva @yield é usada para exibir o conteúdo de uma determinada seção.
+
+    ---------------------------------------------------------------
+
+    Exemplo de página 'FILHA', que herda o layout da página MESTRE:
+
+    --------------------------------------------------------------
+
+    @extends('layout')
+
+    @section('title', 'Page Title')
+
+    @section('sidebar')
+        @parent
+
+        <p>This is appended to the master sidebar.</p>
+    @endsection
+
+    @section('content')
+        <p>This is my body content.</p>
+    @endsection
+    --------------------------------------------------------------
+    OBS.:
+    A diretiva @extends especifica que a página filha está herdando o tamplate 'layoult.blade.php'
+    As visualizações que estendem o layout do Blade podem injetar conteúdo nas seções do layout usando
+    as diretivas @section. O conteúdo dessas seções será exibido no layout usando a diretiva @yield.

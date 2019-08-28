@@ -1,0 +1,58 @@
+
+INSTALAÇÃO / CRIAÇÃO de NOVO PROJETO em LARAVEL:
+
+CONFIGURAÇÃO de AMBIENTE:
+
+  Baixar o PHP, instalá-lo e configurá-lo
+
+  Baixar o PhpStorm ou outra IDE e instalá-lo
+
+  Baixar o Composer e instalá-lo
+
+  Se você estiver no Windows, dentro do diretório do PHP, copie e cole o arquivo php.ini-development, renomeando-o para php.ini. Em seguida, dentro deste arquivo, remova o ponto-e-vírgula da frente da seguinte linha:
+  
+         - extension=pdo_sqlite
+
+  Crie um projeto com Laravel, de nome 'controle-series':
+  
+  composer create-project --prefer-dist laravel/laravel controle-series 5.8.*
+
+  Dentro do arquivo routes/web.php, crie a rota /series e através dela, exiba algumas séries em um HTML
+
+  Através da linha de comando, dentro da pasta do seu projeto, suba o servidor e acesse http://localhost:8000/series para ver o resultado:
+ 
+  cmd> php artisan serve
+
+
+Existem duas opções para iniciar um projeto com Laravel: baixar o instalador ou criar um novo projeto diretamente no terminal.
+
+   CRIANDO um PROJETO DIRETAMENTE no TERMINAL:
+
+   Entrar via CMD no diretório onde será criado o projeto: Ex. xampp\htdocs
+
+   Digitar o cmd> composer create-project --prefer-dist laravel/laravel NOME_DO_PROJETO 5.8.*
+
+   O trecho prefer-dist significa que iremos utilizar a versão mais recente do Laravel e de todas as dependências, excluindo versões beta (de teste).
+   Após esse código, devemos informar o nome do projeto que queremos criar.
+
+   Para que o treinamento seja executado sem o risco de erros, vamos fixar a Versão do Laravel
+   que será utilizada, definindo-a com o comando 5.8.*. Dessa forma, o projeto será criado na
+   versão mais recente do Laravel 5.8.
+
+   Dessa forma, o Composer vai pegar a estrutura do projeto no github do Laravel e, a partir dela,
+   instalará todas as dependências que esse framework precisa para rodar. Depois de instaladas as
+   dependências, teremos um projeto já meio configurado para iniciarmos o desenvolvimento.
+
+
+--------------------------------
+
+  SUBIR o SERVIDOR LOCAL
+
+    CMD> PHP ARTISAN SERVE
+
+    Esse comando 'sobe' o servidor no caminho padrão: "http://127.0.0.1:8000"
+
+    Obs.: Artisan é o nome da interface da linha de comando incluída no Laravel.
+          Ela fornece comandos auxiliares para o desenvolvimento da aplicação.
+
+    Ver mais sobre ARTISAN em: https://laravel-docs-pt-br.readthedocs.io/en/5.0/artisan/

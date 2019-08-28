@@ -1,0 +1,9 @@
+
+REQUISIÇÃO via JAVASCRITP
+
+	Nesta aula, aprendemos como usar o JavaScript (Fetch API) para 
+	enviar uma requisição e manipular o HTML programaticamente (DOM).
+
+	
+	Isso foi implementado na página 'index.blade.php', através das 
+	funções 'toggleInput' e 'editarSerie'.

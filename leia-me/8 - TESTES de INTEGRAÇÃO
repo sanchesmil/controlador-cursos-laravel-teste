@@ -1,0 +1,57 @@
+
+ O QUE é TESTE de INTEGRAÇÃO?
+
+    O teste de integração é a fase do teste de software em que módulos são combinados e testados em grupo.
+    Estes testes ocorrem após a realização de todos os testes unitários e antecede os testes de sistema.
+    O propósito do teste de integração é verificar os requisitos funcionais, de desempenho e de confiabilidade
+    na modelagem do sistema. Com ele é possível descobrir erros de interface entre os componentes do sistema.
+
+ COMO REALIZAR TESTES de INTEGRAÇÃO?
+
+    Através da ferramenta PHPUnit.
+
+    O Laravel já vem preparado para escrever e rodar testes com o PHPUnit.
+    Para isso, existe uma pasta dedicada, chamada 'tests'.
+
+ O QUE é PHPUnit?
+
+    PHPUnit é uma estrutura de testes.
+
+    Com o PHPUNIT é possível realizar TESTES UNITÁRIOS e TESTES DE INTEGRAÇÃO.
+
+ CONFIGURAÇÃO do ambiente para TESTE:
+
+     Na raiz do projeto, criar um novo arquivo de variáveis de ambiente para testes chamado: .env.testing
+
+     No arquivo '.env.testing' deve-se configurar as variáveis de teste.
+
+     Ex.:
+            DB_CONNECTION=sqlite
+
+            DB_DATABASE=:memory:   -> Esta linha permite definir um banco de dados em memória para testes (Sqlite)
+
+     Obs.: O arquivo '.env.testing' sobrescreve o arquivo '.env'.
+           Em produção deve-se remover o arquivo .env.testing.
+           Tbm é aconselhavel remover o arquivo .ENV. (Ver artigo 9 - Deploy)
+
+ COMO criar uma CLASSE de TESTES via CMD?
+
+    cmd> php artisan make:test 'nome_classe_teste' --'nome_pasta' (opcional)
+
+    Ex.: php artisan make:test TemporadaTest --Unit
+
+         Neste caso, cria a classe de testes 'TemporadaTest' na pasta 'Unit'.
+
+ COMO rodar os TESTES?
+
+    Na raiz do projeto executar o comando:
+
+    cmd> VENDOR\BIN\PHPUNIT
+
+
+
+
+
+
+
+

@@ -1,0 +1,178 @@
+
+    AUTENTICAÇÃO DE USUÁRIOS
+
+        O Laravel já traz uma API de autenticação chamada AUTH. Com ela é possível realizar
+        a autenticação de usuários, proteger a sessão, recuperar usuários.
+
+        Cmd> PHP ARTISAN MAKE:AUTH
+
+        Este comando cria uma estrutura de pastas e arquivos de autenticação prontos para
+        serem usados, tais como:
+            - Views       -> de login e de registro
+            - Rotas       -> para todos os endpoints de autenticação.
+            - Controllers -> cria vários controladores de autenticação pré-configurados
+            - Model       -> cria a model User (que modela o usuário do banco)
+
+        Obs.: MIDDLEWARES:
+
+            Para lidar com a autenticação o Laravel fornece uma série de Middlewares.
+            Middlewares são como filtros que podem ser executados antes (ou depois) da 
+            requisição chegar ao Controller. 
+
+        CONFIGURAÇÕES:
+
+            O arquivo de configurações fica localizado em 'config/auth.php'.
+            Através deste arquivo é possível definir várias opções de comportamento
+            dos serviços de autenticação.
+
+        * COMO FAZER A AUTENTICAÇÃO CONTRA ACESSO INDEVIDO?
+
+        Pode ser feito de 4 FORMAS:
+
+            1º - IMPLEMENTANDO EM CADA MÉTODO do CONTROLLER
+
+                Obs.: Indicado qd quero proteger apenas 1 rota específica de um controller
+
+
+                Ex: public function index(Request $request){
+                        if (!Auth::check()){
+                            echo Não autenticado!
+                            exit();
+                        }
+                        ......
+                    }
+
+            2º - IMPLEMENTANDO DIRETO no MAPEAMENTO das ROTAS
+
+                Obs.: Usado qd quero proteger algumas rotas específicas, mas não o controller inteiro.
+
+                Ex.:  Route::get('/series', 'SeriesController@index')    // Redireciona p/ o método index() do controller (via GET).
+                            ->name('listar_series')                      // Dá um apelido (alias) para a rota
+                            ->middleware('auth');                        // Executa uma classe de serviço antes de executar o controller
+
+            3º - IMPLEMENTANDO no CONSTRUTOR dos CONTROLLERS
+
+                Obs.: Usado qd quero proteger o controller inteiro.
+
+                Ex.:    public function __construct(){
+                            $this->middleware('auth');                   // Auth = classe do Laravel que trata autenticação
+                        }
+
+            4º - IMPLEMENTANDO no KERNEL ('app/Http/Kernel.php')
+
+                Ex.: Acrescentar a classe 'Auth' ao grupo de middlewares de execução obrigatória durante uma requisição
+
+                protected $middlewareGroups = [
+                        'web' => [
+                            \App\Http\Middleware\EncryptCookies::class,
+                            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+                            \Illuminate\Session\Middleware\StartSession::class,
+                            // \Illuminate\Session\Middleware\AuthenticateSession::class,
+                            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+                            \App\Http\Middleware\VerifyCsrfToken::class,
+                            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
+                            'Auth'                                                         // Middleware de autenticação acrescentado
+                        ],
+                }
+
+    AUTENTICAÇÃO:
+
+    A classe AUTH fornece diversos métodos relacionados à autenticação.
+
+    * Qual método tenta realizar o login?
+
+       É o método Auth::attempt($dadosRequisicao));
+ 
+       Este método espera receber os dados necessários para buscar um usuário no banco de dados, 
+       e ao encontrá-lo, realiza o processo de login, salvando os dados do usuário na sessão. 
+
+       Obs.: Ver a classe EntrarController.php que implementa este médoto de autenticação.
+
+    * Qual método realiza logof?
+
+        Auth::logout();
+
+        Obs.: Ver a o arquivo de rotas 'web.php'
+
+    * Como verificar se o usuário está logado para liberar acesso a determinada funcionalidade?
+
+        Através das diretivas @auth e @endauth.
+
+        Tudo que estiver 'dentro' das diretivas será exibido somente para usuários logados.
+
+        Obs.: Ver as páginas 'layout.blade.php' e 'series/index.blade.php' em 'resources/view/' e 
+
+    * E se for um visitante na página (usuário anônimo), como mostrar conteúdo específico para ele?
+
+        Através das diretivas @guest e @endguest.
+
+        Tudo que estiver 'dentro' das diretivas será exibido para todos os usuário que não estiverem logados.
+
+        Obs.: Ver a página 'layout.blade.php' em 'resources/view/'.
+
+
+    MIDDLEWARES:
+
+      * O QUE é um MIDDLEWARE?
+
+          É uma espécie de FILTRO ou INTERCEPTADOR de requisições HTTP.
+
+          Os Middlewares são 'classes' auxiliares que manipulam a requisição antes ou depois dela chegar ao Controller.
+
+          MIDDLEWARE 'AUTH': Por default, o laravel fornece uma middleware que verifica se o usuário está logado chamado 'AUTH'.
+
+          Todavia, podemos criar o nosso próprio middleware de auntenticação.
+
+      * COMO CRIAR um novo MIDDLEWARE?
+
+          Cmd> PHP ARTISAN MAKE:MIDDLEWARE 'NOME_MIDDLEWARE'
+
+          Através dele, é possível executar um código para várias rotas (antes ou depois)
+
+          Ex. No projeto foi criado o middleware 'Autenticador' que realiza a autenticação de usuários no sistema.
+
+      * COMO REGISTRAR e NOMEAR (APELIDAR) o NOVO MIDDLEWARE CRIADO?
+
+          Configurando o novo middleware no arquivo 'KERNEL.PHP' em 'app'.
+
+          CONFIGURAR o novo MIDDLEWARE para uso em ROTAS ESPECÍFICAS:
+
+            - Adicioná-lo no array de middlewares de rotas com o par chave->valor (apelido -> novo middleware) 
+
+            protected $routeMiddleware = [   
+                ...
+
+                'autenticador' => \App\Http\Middleware\Autenticador::class      // Adiciona um nome ao novo meddleware
+            ];
+
+          CONFIGURAR o novo MIDDLEWARE para uso GLOBAL (em todas as ROTAS):
+
+            - Neste caso, pode-se adicionar o novo middleware no grupo web de middlewares:
+
+            protected $middlewareGroups = [
+                'web' => [
+                    ...
+                    Autenticador::class
+                ]
+            ];
+
+            Dessa forma, todos os acessos às rotas executarão o novo middleware. 
+
+
+      * NA PRÁTICA: 
+
+          Conforme visto acima, o middleware pode ser configurado de diversas formas.
+
+          Neste projeto o middleware de autenticação 'Autenticador' foi configurado para ser usado em 
+          rotas específicas, ou seja, foi registrado no array de middlewares de rotas no arquivo Kernel.php.
+
+          Além disso, foi chamado diretamente sobre as rotas que necessitavam de proteção 
+          contra acesso indevido no arquivo de rotas 'web.php'.
+          
+          * OBS.: Nem todas as rotas necessitam que o usuário esteja autenticado para acessá-las, como por
+          exemplo, a rota que mostra as séries. Neste caso, todos os visitantes poderão visualizar as séries.
+          
+          * OBS.: É possível ter vários 'middlewares' sobre a mesma rota. 
+
+

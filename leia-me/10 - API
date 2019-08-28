@@ -1,0 +1,37 @@
+
+    API
+
+        API refere-se ao termo em inglês "Application Programming Interface" que significa
+        "Interface de Programação de Aplicativos".
+
+    O que é uma API?
+
+        As APIs são um tipo de “ponte” que conectam aplicações.
+
+        De modo geral, uma API nada mais é que uma interface simplificada e padronizada, que fornece
+        a vários programadores um método para a construção de aplicações que se comuniquem internamente.
+
+        As APIs podem ser utilizadas para os mais variados tipos de negócio, por empresas de diversos
+        nichos de mercado ou tamanho. Através das APIs, os aplicativos podem se comunicar uns com os
+        outros sem conhecimento ou intervenção dos usuários.
+
+    Quais os benefícios de usar API's?
+
+        As APIs proporcionam a integração entre sistemas com linguagens totalmente distintas de maneira
+        ágil e segura. Além disso, possibilitam benefícios como a segurança dos dados, facilidade no
+        intercâmbio de informações e a monetização de acessos.
+
+    Como o LARAVEL lida com API's?
+
+        Por padrão, o Laravel cria um arquivo API na pasta 'routes' do sistema, chamado 'api.php'.
+        Através deste arquivo é possível configurar rotas para acessar os serviços disponíveis.
+
+        Todavia, o LARAVEL possui um 'micro-framework' específico para criação de API's, chamado LUMEN.
+
+    COMO 'usar' a API?
+
+    No browser, basta digitar a URL do serviço/endpoint/rota e os dados serão retornados em JSON.
+
+    Ex.: http://localhost:8000/api/serie   (deve-se colocar /api/ quando se trata de solicitação de serviços via API)
+
+
